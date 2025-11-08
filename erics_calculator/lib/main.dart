@@ -60,7 +60,14 @@ class _MainAppState extends State<MainApp> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(width: 64),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            screenVal = '';
+                          });
+                        },
+                        child: Text('Clear'),
+                      ),
                       getNumberKey(num: 0),
                       SizedBox(width: 64),
                     ],
@@ -79,10 +86,10 @@ class _MainAppState extends State<MainApp> {
 
     widg = TextButton(
       onPressed: () {
-        print('Pressed $num');
         setState(() {
           screenVal += num.toString();
         });
+        print('Value:$screenVal');
       },
       child: Text(num.toString()),
     );
