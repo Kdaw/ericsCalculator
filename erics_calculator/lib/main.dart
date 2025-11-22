@@ -13,6 +13,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   String screenVal = '';
+  double total = 0;
+  String? operation;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,10 @@ class _MainAppState extends State<MainApp> {
             SafeArea(
               child: Column(
                 children: [
+                  SizedBox(height: 64),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text(screenVal)],
+                    children: [Text(screenVal, style: TextStyle(fontSize: 20))],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -39,6 +42,7 @@ class _MainAppState extends State<MainApp> {
                       getNumberKey(num: 1),
                       getNumberKey(num: 2),
                       getNumberKey(num: 3),
+                      TextButton(onPressed: add, child: Text('+')),
                     ],
                   ),
                   Row(
@@ -47,6 +51,7 @@ class _MainAppState extends State<MainApp> {
                       getNumberKey(num: 4),
                       getNumberKey(num: 5),
                       getNumberKey(num: 6),
+                      TextButton(onPressed: () {}, child: Text('-')),
                     ],
                   ),
                   Row(
@@ -55,6 +60,7 @@ class _MainAppState extends State<MainApp> {
                       getNumberKey(num: 7),
                       getNumberKey(num: 8),
                       getNumberKey(num: 9),
+                      TextButton(onPressed: () {}, child: Text('*')),
                     ],
                   ),
                   Row(
@@ -69,7 +75,8 @@ class _MainAppState extends State<MainApp> {
                         child: Text('Clear'),
                       ),
                       getNumberKey(num: 0),
-                      SizedBox(width: 64),
+                      TextButton(onPressed: equals, child: Text('=')),
+                      TextButton(onPressed: () {}, child: Text('/')),
                     ],
                   ),
                 ],
@@ -95,5 +102,47 @@ class _MainAppState extends State<MainApp> {
     );
 
     return widg;
+  }
+
+  void add() {
+    String val;
+
+    if (screenVal.contains('+')) {
+      val = screenVal.substring(screenVal.indexOf('+') + 1);
+    } else {
+      val = screenVal;
+    }
+
+    if (operation == null) {
+      total = double.parse(val);
+      operation = '+';
+    } else {
+      total = calculate(val);
+      operation = null;
+    }
+    setState(() {
+      screenVal = '${total.toString()}+';
+    });
+  }
+
+  void equals() {
+    if (operation == '+') {
+      add();
+
+      setState(() {
+        screenVal = total.toString();
+      });
+    }
+  }
+
+  double calculate(String val) {
+    double result = 0;
+
+    switch (operation) {
+      case '+':
+        result = double.parse(val) + total;
+    }
+
+    return result;
   }
 }
